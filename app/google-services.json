@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836077608754",
+    "project_id": "fotpulse",
+    "storage_bucket": "fotpulse.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836077608754:android:217d6de2564fe6d225812b",
+        "android_client_info": {
+          "package_name": "com.example.fotpulse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6jfJRfgmYF7kkYKFxglnJa32RDzUWzDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
