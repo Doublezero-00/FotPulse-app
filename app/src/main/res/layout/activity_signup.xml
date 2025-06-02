@@ -2,47 +2,69 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     android:padding="16dp">
 
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
+        android:background="@color/backgroundColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/usernameField"
-            android:hint="Username"
-            android:layout_width="320dp"
-            android:layout_height="48dp" />
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/logo"
+            android:contentDescription="App Logo" />
 
         <EditText
-            android:id="@+id/emailField"
-            android:hint="Email"
+            android:id="@+id/editTextUsername" android:hint="Username"
+            android:layout_marginTop="60dp"
+            android:layout_width="320dp"
+            android:textColor="@color/textColor"
+            android:layout_height="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rounded_edittext_bg"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextEmail" android:hint="Email"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
-            android:inputType="textEmailAddress" />
+            android:textColor="@color/textColor"
+            android:inputType="textEmailAddress"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rounded_edittext_bg" />
 
         <EditText
-            android:id="@+id/passwordField"
-            android:hint="Password"
+            android:id="@+id/editTextPassword" android:hint="Password"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
-            android:inputType="textPassword" />
+            android:textColor="@color/textColor"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rounded_edittext_bg" />
 
         <EditText
-            android:id="@+id/confirmPasswordField"
-            android:hint="Confirm Password"
+            android:id="@+id/editTextConfirmPassword" android:hint="Confirm Password"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
-            android:inputType="textPassword" />
+            android:textColor="@color/textColor"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rounded_edittext_bg" />
 
         <Button
-            android:id="@+id/signupButton"
-            android:text="Sign Up"
+            android:id="@+id/buttonSignup" android:text="Sign Up"
             android:layout_width="280dp"
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
@@ -50,10 +72,12 @@
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/loginRedirect"
-            android:text="Already have an account? Log In"
+            android:id="@+id/textViewLogin" android:text="Already have an account? Log In"
             android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/textColor"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 </ScrollView>

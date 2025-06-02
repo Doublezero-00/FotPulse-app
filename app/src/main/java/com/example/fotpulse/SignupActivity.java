@@ -1,90 +1,92 @@
 package com.example.fotpulse;
 
-import android.content.Intent;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity {
 
-    EditText usernameField, emailField, passwordField, confirmPasswordField;
-    Button signupButton;
-    TextView loginRedirect;
-
-    FirebaseAuth auth;
+    private EditText editTextUsername, editTextEmail, editTextPassword;
+    private Button buttonSignup;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        auth = FirebaseAuth.getInstance();
+        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonSignup = findViewById(R.id.buttonSignup);
 
-        usernameField = findViewById(R.id.usernameField);
-        emailField = findViewById(R.id.emailField);
-        passwordField = findViewById(R.id.passwordField);
-        confirmPasswordField = findViewById(R.id.confirmPasswordField);
-        signupButton = findViewById(R.id.signupButton);
-        loginRedirect = findViewById(R.id.loginRedirect);
+        dbHelper = new DatabaseHelper(this);
 
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                registerUser();
-            }
-        });
+            public void onClick(View v) {
+                String username = editTextUsername.getText().toString();
+                String email = editTextEmail.getText().toString();
+                String password = editTextPassword.getText().toString();
 
-        loginRedirect.setOnClickListener(view -> {
-            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-            startActivity(intent);
+                if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(SignupActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    long result = dbHelper.addUser(username, email, password);
+                    if (result > 0) {
+                        Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                        finish(); // Close the activity and go back
+                    } else {
+                        Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         });
     }
 
-    private void registerUser() {
-        String username = usernameField.getText().toString().trim();
-        String email = emailField.getText().toString().trim();
-        String password = passwordField.getText().toString().trim();
-        String confirmPassword = confirmPasswordField.getText().toString().trim();
+    // Inner class to handle SQLite database operations
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+        private static final String DATABASE_NAME = "user_db";
+        private static final int DATABASE_VERSION = 1;
+        private static final String TABLE_USERS = "users";
+        private static final String COLUMN_USERNAME = "username";
+        private static final String COLUMN_EMAIL = "email";
+        private static final String COLUMN_PASSWORD = "password";
 
-        if (username.isEmpty()) {
-            usernameField.setError("Username required");
-            usernameField.requestFocus();
-            return;
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailField.setError("Valid email required");
-            emailField.requestFocus();
-            return;
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            String createTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
+                    COLUMN_USERNAME + " TEXT," +
+                    COLUMN_EMAIL + " TEXT," +
+                    COLUMN_PASSWORD + " TEXT)";
+            db.execSQL(createTableQuery);
         }
 
-        if (password.length() < 6) {
-            passwordField.setError("Min 6 characters");
-            passwordField.requestFocus();
-            return;
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+            onCreate(db);
         }
 
-        if (!password.equals(confirmPassword)) {
-            confirmPasswordField.setError("Passwords do not match");
-            confirmPasswordField.requestFocus();
-            return;
+        // Method to add a new user to the database
+        long addUser(String username, String email, String password) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_USERNAME, username);
+            values.put(COLUMN_EMAIL, email);
+            values.put(COLUMN_PASSWORD, password);
+            return db.insert(TABLE_USERS, null, values);
         }
-
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(SignupActivity.this, "Signup successful", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-            } else {
-                Toast.makeText(SignupActivity.this, "Signup failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
