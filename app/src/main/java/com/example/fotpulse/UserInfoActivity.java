@@ -1,4 +1,4 @@
-package com.example.fotpulse; // Ensure this matches your app's package
+package com.example.fotpulse;
 
 import android.content.ContentValues;
 import android.content.Intent;

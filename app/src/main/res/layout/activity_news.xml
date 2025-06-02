@@ -18,15 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/backgroundColor"
-            app:titleTextColor="#000000" /> <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primaryColor"
-        android:contentDescription="News Category Tabs"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="#E0E0E0" />
+            app:titleTextColor="#000000" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primaryColor"
+            android:contentDescription="News Category Tabs"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="#E0E0E0" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
@@ -44,6 +46,8 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:background="@color/primaryColor"
-        app:itemIconTint="@color/backgroundColor"   app:itemTextColor="#FFFFFF"   app:menu="@menu/drawer_menu" />
+        app:itemIconTint="@color/backgroundColor"
+        app:itemTextColor="#FFFFFF"
+        app:itemBackground="@drawable/nav_item_selected_background"   app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
