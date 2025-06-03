@@ -2,18 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_news"
-            android:title="News" />
+            android:title="News"
+             />
+
         <item
-            android:id="@+id/nav_dev_info"
-            android:title="Dev Info" />
+        android:id="@+id/nav_dev_info"
+        android:title="Dev Info"
+         />
+
         <item
-            android:id="@+id/nav_user_info"
-            android:title="User Info" />
+        android:id="@+id/nav_user_info"
+        android:title="User Info"
+         />
+
         <item
-            android:id="@+id/nav_logout"
-            android:title="Sign out" />
-    </group>
+        android:id="@+id/nav_logout"
+        android:title="Sign out"
+         /> </group>
 
 </menu>

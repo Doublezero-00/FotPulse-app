@@ -20,7 +20,8 @@
             android:contentDescription="App Logo" />
 
         <EditText
-            android:id="@+id/editTextUsername" android:hint="Username"
+            android:id="@+id/editTextUsername"
+            android:hint="Username"
             android:layout_marginTop="60dp"
             android:layout_width="320dp"
             android:textColor="@color/textColor"
@@ -31,7 +32,8 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editTextEmail" android:hint="Email"
+            android:id="@+id/editTextEmail"
+            android:hint="Email"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
@@ -42,7 +44,8 @@
             android:background="@drawable/rounded_edittext_bg" />
 
         <EditText
-            android:id="@+id/editTextPassword" android:hint="Password"
+            android:id="@+id/editTextPassword"
+            android:hint="Password"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
@@ -53,7 +56,8 @@
             android:background="@drawable/rounded_edittext_bg" />
 
         <EditText
-            android:id="@+id/editTextConfirmPassword" android:hint="Confirm Password"
+            android:id="@+id/editTextConfirmPassword"
+            android:hint="Confirm Password"
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
@@ -64,7 +68,8 @@
             android:background="@drawable/rounded_edittext_bg" />
 
         <Button
-            android:id="@+id/buttonSignup" android:text="Sign Up"
+            android:id="@+id/buttonSignup"
+            android:text="Sign Up"
             android:layout_width="280dp"
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
@@ -72,7 +77,8 @@
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/textViewLogin" android:text="Already have an account? Log In"
+            android:id="@+id/textViewLogin"
+            android:text="Already have an account? Log In"
             android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
             android:textColor="@color/textColor"

@@ -5,50 +5,58 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
     private List<NewsItem> newsList;
 
-    public static class NewsViewHolder extends RecyclerView.ViewHolder {
-        TextView title, content;
-        ImageView imageView;
-
-        public NewsViewHolder(View v) {
-            super(v);
-            title = v.findViewById(R.id.titleText);
-            content = v.findViewById(R.id.contentText);
-            imageView = v.findViewById(R.id.imageView);
-        }
-    }
-
     public NewsAdapter(List<NewsItem> newsList) {
         this.newsList = newsList;
     }
 
+    // NEW: Method to update data
+    public void updateData(List<NewsItem> newNewsList) {
+        this.newsList.clear();
+        this.newsList.addAll(newNewsList);
+        notifyDataSetChanged(); // Notify RecyclerView that data has changed
+    }
+
+    @NonNull
     @Override
-    public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_card, parent, false);
-        return new NewsViewHolder(v);
+    public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false); // Ensure this matches your item layout name
+        return new NewsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position) {
-        NewsItem item = newsList.get(position);
-        holder.title.setText(item.getTitle());
-        holder.content.setText(item.getContent());
-
-        Glide.with(holder.imageView.getContext())
-                .load(item.getImageUrl())
-                .placeholder(R.drawable.placeholder)
-                .into(holder.imageView);
+    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+        NewsItem currentItem = newsList.get(position);
+        holder.titleTextView.setText(currentItem.getTitle());
+        holder.contentTextView.setText(currentItem.getContent());
+        // If you have image loading, implement it here (e.g., using Glide/Picasso)
+        // holder.imageView.setImageResource(R.drawable.placeholder); // Placeholder if no image library
     }
 
     @Override
     public int getItemCount() {
         return newsList.size();
+    }
+
+    public static class NewsViewHolder extends RecyclerView.ViewHolder {
+        public TextView titleTextView;
+        public TextView contentTextView;
+        // public ImageView imageView; // Uncomment if you add an ImageView in item_news.xml
+
+        public NewsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            titleTextView = itemView.findViewById(R.id.titleText); // Ensure this ID matches item_news.xml
+            contentTextView = itemView.findViewById(R.id.contentText); // Ensure this ID matches item_news.xml
+            // imageView = itemView.findViewById(R.id.imageView); // Uncomment if you add an ImageView in item_news.xml
+        }
     }
 }

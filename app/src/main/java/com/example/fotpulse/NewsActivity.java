@@ -1,122 +1,166 @@
 package com.example.fotpulse;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment; // Import for Fragment management
+import androidx.fragment.app.FragmentManager; // Import for Fragment management
+import androidx.fragment.app.FragmentTransaction; // Import for Fragment management
 
+import com.example.fotpulse.fragments.NewsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView; // Import for BottomNavigationView
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import androidx.viewpager2.widget.ViewPager2;
+// Import your new fragment classes
+import com.example.fotpulse.fragments.AcademicFragment;
+import com.example.fotpulse.fragments.EventsFragment;
+
 
 public class NewsActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
-    private NewsPagerAdapter adapter;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
+    private NavigationView navigationView;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        // Insert dummy news if none exists
-        insertDummyNewsIfNeeded();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
+        // If user is not logged in, redirect to LoginActivity
+        if (currentUser == null) {
+            startActivity(new Intent(NewsActivity.this, LoginActivity.class));
+            finish();
+            return;
+        }
 
-        adapter = new NewsPagerAdapter(this);
-        viewPager.setAdapter(adapter);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        toolbar = findViewById(R.id.toolbar);
+        bottomNavigationView = findViewById(R.id.bottom_navigation); // Initialize BottomNavigationView
+        navigationView = findViewById(R.id.navigation_view);
 
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    switch (position) {
-                        case 0: tab.setText("Sports"); break;
-                        case 1: tab.setText("Academic"); break;
-                        case 2: tab.setText("Events"); break;
-                    }
-                }).attach();
-
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.navigation_view);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        // --- Setup Toolbar and Navigation Drawer ---
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("FotNow"); // Set your title here
+        }
 
-        // Enable hamburger menu
+        // Set the black navigation icon
+        toolbar.setNavigationIcon(R.drawable.ic_academic_black_24dp);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Handle menu item clicks
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
+        // --- Setup Navigation View Listener ---
+        setupNavigationView();
 
-            if (id == R.id.nav_news) {
+        // --- Setup Bottom Navigation View Listener ---
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+                int itemId = item.getItemId();
+
+                if (itemId == R.id.navigation_news) {
+                    selectedFragment = new NewsFragment();
+                    toolbar.setTitle("News"); // Update toolbar title
+                } else if (itemId == R.id.navigation_academic) {
+                    selectedFragment = new AcademicFragment();
+                    toolbar.setTitle("Academic"); // Update toolbar title
+                } else if (itemId == R.id.navigation_events) {
+                    selectedFragment = new EventsFragment();
+                    toolbar.setTitle("Events"); // Update toolbar title
+                }
+
+                if (selectedFragment != null) {
+                    loadFragment(selectedFragment);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // Load the default fragment (NewsFragment) when the activity starts
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_news); // This will trigger the listener
+        }
+    }
+
+    private void setupNavigationView() {
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = headerView.findViewById(R.id.nav_header_username);
+        TextView navEmail = headerView.findViewById(R.id.nav_header_email);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            navEmail.setText(user.getEmail());
+            navUsername.setText(user.getDisplayName() != null ? user.getDisplayName() : "User");
+        }
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_user_info) {
+                    Toast.makeText(NewsActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(NewsActivity.this, UserInfoActivity.class));
+                }  else if (id == R.id.nav_logout) {
+                    mAuth.signOut();
+                    Toast.makeText(NewsActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(NewsActivity.this, LoginActivity.class));
+                    finish();
+                } else if (id == R.id.nav_dev_info) {
+                    Toast.makeText(NewsActivity.this, "Developer info clicked", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(NewsActivity.this, ProfileActivity.class));
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+
+                }
+
                 drawerLayout.closeDrawer(GravityCompat.START);
-                return true;
-            } else if (id == R.id.nav_user_info) {
-                startActivity(new Intent(NewsActivity.this, UserInfoActivity.class));
-                drawerLayout.closeDrawer(GravityCompat.START);
-                return true;
-            } else if (id == R.id.nav_logout) {
-                Intent intent = new Intent(NewsActivity.this, LoginActivity.class);
-                startActivity(intent);
                 return true;
             }
-
-            return false;
         });
     }
 
+    // Method to load fragments into the FrameLayout
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
 
-    private void insertDummyNewsIfNeeded() {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM news", null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int count = cursor.getInt(0);
-
-                if (count == 0) {
-                    ContentValues values = new ContentValues();
-
-                    // Sports
-                    values.put("title", "Big Football Match");
-                    values.put("content", "Exciting match between A and B!");
-                    values.put("category", "Sports");
-                    values.put("media_url", "https://images.unsplash.com/photo-1609333623319-ec4f2a32529b?auto=format&fit=crop&w=800&q=80");
-                    db.insert("news", null, values);
-
-                    // Academic
-                    values.clear();
-                    values.put("title", "Exam Results Released");
-                    values.put("content", "Check the university portal for full details.");
-                    values.put("category", "Academic");
-                    values.put("media_url", "https://images.unsplash.com/photo-1609333623319-ec4f2a32529b?auto=format&fit=crop&w=800&q=80");
-                    db.insert("news", null, values);
-
-                    // Events
-                    values.clear();
-                    values.put("title", "Hackathon 2025");
-                    values.put("content", "Register now for the campus-wide hackathon!");
-                    values.put("category", "Events");
-                    values.put("media_url", "https://plus.unsplash.com/premium_photo-1677403157589-0583b29f8a23?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-                    db.insert("news", null, values);
-                }
-            }
-            cursor.close();
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 }
