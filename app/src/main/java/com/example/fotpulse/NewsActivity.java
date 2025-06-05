@@ -147,6 +147,7 @@ public class NewsActivity extends AppCompatActivity {
         });
     }
 
+    // Method to load fragments into the FrameLayout
     private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
