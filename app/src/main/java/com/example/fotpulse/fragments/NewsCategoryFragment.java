@@ -27,10 +27,10 @@ public class NewsCategoryFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NewsAdapter newsAdapter;
-    private DatabaseHelper dbHelper; // Use your main DatabaseHelper
+    private DatabaseHelper dbHelper;
 
     public NewsCategoryFragment() {
-        // Required empty public constructor
+
     }
 
     public static NewsCategoryFragment newInstance(String category) {
@@ -57,13 +57,13 @@ public class NewsCategoryFragment extends Fragment {
         TextView categoryTextView = view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
             categoryTextView.setText("Displaying " + category + " News");
-            categoryTextView.setVisibility(View.VISIBLE); // Make it visible for testing
+            categoryTextView.setVisibility(View.VISIBLE);
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewNews);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize your main DatabaseHelper
+
         dbHelper = new DatabaseHelper(getContext());
 
         loadNewsData();
@@ -83,8 +83,8 @@ public class NewsCategoryFragment extends Fragment {
             newsAdapter = new NewsAdapter(newsList);
             recyclerView.setAdapter(newsAdapter);
         } else {
-            // If adapter already exists, update its data
-            newsAdapter.updateData(newsList); // You'll need to add this method to NewsAdapter
+
+            newsAdapter.updateData(newsList);
         }
 
 
@@ -96,12 +96,6 @@ public class NewsCategoryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // It's generally better to close the database when the helper is no longer needed,
-        // but for a singleton-like helper, it might be managed by the Application context.
-        // If dbHelper is a singleton, you might not close it here.
-        // For now, let's keep it simple:
-        // if (dbHelper != null) {
-        //     dbHelper.close();
-        // }
+
     }
 }

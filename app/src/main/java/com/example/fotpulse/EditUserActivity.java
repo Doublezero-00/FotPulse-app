@@ -20,7 +20,7 @@ public class EditUserActivity extends AppCompatActivity {
     private static final String TAG = "EditUserActivity";
 
     EditText etUsername;
-    TextView tvEmailDisplay; // Read-only display for email
+    TextView tvEmailDisplay;
     Button btnSave, btnCancel;
 
     DatabaseHelper dbHelper;
@@ -29,10 +29,10 @@ public class EditUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user); // You need to create this XML layout
+        setContentView(R.layout.activity_edit_user);
 
         etUsername = findViewById(R.id.etEditUsername);
-        tvEmailDisplay = findViewById(R.id.tvEditEmailDisplay); // Assuming a TextView for email
+        tvEmailDisplay = findViewById(R.id.tvEditEmailDisplay);
         btnSave = findViewById(R.id.btnSaveEdit);
         btnCancel = findViewById(R.id.btnCancelEdit);
 
@@ -47,7 +47,7 @@ public class EditUserActivity extends AppCompatActivity {
         loadCurrentUserInfoForEdit();
 
         btnSave.setOnClickListener(v -> saveUserInfo());
-        btnCancel.setOnClickListener(v -> finish()); // Just close the activity
+        btnCancel.setOnClickListener(v -> finish());
     }
 
     private void loadCurrentUserInfoForEdit() {
@@ -68,9 +68,9 @@ public class EditUserActivity extends AppCompatActivity {
                 String email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USERS_EMAIL));
 
                 etUsername.setText(username);
-                tvEmailDisplay.setText("Email: " + email); // Display email as read-only
+                tvEmailDisplay.setText("Email: " + email);
             } else {
-                // Should ideally not happen if UserInfoActivity correctly created a default entry
+
                 Log.w(TAG, "No local profile found for editing. Pre-filling with Firebase data.");
                 etUsername.setText(currentUser.getDisplayName() != null ? currentUser.getDisplayName() : "Default User");
                 tvEmailDisplay.setText("Email: " + currentUser.getEmail());
@@ -108,7 +108,7 @@ public class EditUserActivity extends AppCompatActivity {
             if (rowsAffected > 0) {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "User profile updated for UID: " + currentUser.getUid());
-                finish(); // Go back to UserInfoActivity
+                finish();
             } else {
                 Toast.makeText(this, "Failed to update profile. User not found locally?", Toast.LENGTH_LONG).show();
                 Log.w(TAG, "Failed to update profile. No rows affected for UID: " + currentUser.getUid());

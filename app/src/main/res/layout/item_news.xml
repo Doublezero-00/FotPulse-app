@@ -55,7 +55,8 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/primaryColor"
             android:textSize="12sp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:src="@drawable/placeholder" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

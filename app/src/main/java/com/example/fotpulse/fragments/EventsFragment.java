@@ -15,15 +15,15 @@ import com.example.fotpulse.R;
 public class EventsFragment extends Fragment {
 
     public EventsFragment() {
-        // Required empty public constructor
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events, container, false);
-        // You can add content specific to Events section here
-        TextView textView = view.findViewById(R.id.fragment_title); // Assuming you add a TextView in fragment_events.xml
+
+        TextView textView = view.findViewById(R.id.fragment_title);
         if (textView != null) {
             textView.setText("Events Content");
         }

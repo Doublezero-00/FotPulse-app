@@ -22,15 +22,14 @@ public class NewsFragment extends Fragment {
 
     private String[] tabTitles = {"Sports", "Academic", "Events"};
 
-    // --- IMPORTANT: Update these R.drawable references to your new icons ---
     private int[] tabIcons = {
-            R.drawable.ic_sports_tab_black_24dp,    // Replace with your new Sports icon
-            R.drawable.ic_academic_black_24dp,  // Replace with your new Academic icon
-            R.drawable.ic_events_tab_black_24dp     // Replace with your new Events icon
+            R.drawable.ic_sports_tab_black_24dp,
+            R.drawable.ic_academic_black_24dp,
+            R.drawable.ic_events_tab_black_24dp
     };
 
     public NewsFragment() {
-        // Required empty public constructor
+
     }
 
     @Nullable
@@ -47,7 +46,7 @@ public class NewsFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     tab.setText(tabTitles[position]);
-                    tab.setIcon(tabIcons[position]); // This line sets the icon
+                    tab.setIcon(tabIcons[position]);
                 }
         ).attach();
 

@@ -50,11 +50,11 @@ public class NewsCategoryFragment extends Fragment {
         Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_NEWS + " WHERE category = ?", new String[]{category});
         while (cursor.moveToNext()) {
             newsList.add(new NewsItem(
-                    cursor.getInt(0),    // id
-                    cursor.getString(1), // title
-                    cursor.getString(2), // content
-                    cursor.getString(3), // category
-                    cursor.getString(4)  // imageUrl
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4)
             ));
         }
         cursor.close();

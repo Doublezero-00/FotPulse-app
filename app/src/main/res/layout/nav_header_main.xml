@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@mipmap/ic_launcher_round" android:contentDescription="Navigation header icon"
+        android:src="@drawable/userprofile" android:contentDescription="Navigation header icon"
         android:layout_marginBottom="8dp" />
 
     <TextView

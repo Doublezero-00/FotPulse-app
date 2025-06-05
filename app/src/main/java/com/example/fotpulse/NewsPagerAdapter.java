@@ -15,19 +15,16 @@ public class NewsPagerAdapter extends FragmentStateAdapter {
 
     private String[] tabTitles;
 
-    // Constructor for when the adapter is created from an Activity
     public NewsPagerAdapter(@NonNull FragmentActivity fragmentActivity, String[] tabTitles) {
         super(fragmentActivity);
         this.tabTitles = tabTitles;
     }
 
-    // Constructor for when the adapter is created from a Fragment (THIS IS WHAT NewsFragment NEEDS)
     public NewsPagerAdapter(@NonNull Fragment fragment, String[] tabTitles) {
         super(fragment);
         this.tabTitles = tabTitles;
     }
 
-    // Alternative constructor using FragmentManager and Lifecycle (less common now, but good to know)
     public NewsPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, String[] tabTitles) {
         super(fragmentManager, lifecycle);
         this.tabTitles = tabTitles;
@@ -37,8 +34,6 @@ public class NewsPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        // Return a new instance of your NewsCategoryFragment for each tab.
-        // You can pass the category title to the fragment if it needs to load specific news.
         return NewsCategoryFragment.newInstance(tabTitles[position]);
     }
 

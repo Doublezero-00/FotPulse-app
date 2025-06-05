@@ -28,7 +28,7 @@ public class SignupActivity extends AppCompatActivity {
     private TextView textViewLogin;
 
     private FirebaseAuth mAuth;
-    private DatabaseHelper dbHelper; // This is your TOP-LEVEL DatabaseHelper
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class SignupActivity extends AppCompatActivity {
         buttonSignup = findViewById(R.id.buttonSignup);
         textViewLogin = findViewById(R.id.textViewLogin);
 
-        dbHelper = new DatabaseHelper(this); // Initialize your TOP-LEVEL DatabaseHelper
+        dbHelper = new DatabaseHelper(this);
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,6 @@ public class SignupActivity extends AppCompatActivity {
         String password = editTextPassword.getText().toString().trim();
         String confirmPassword = editTextConfirmPassword.getText().toString().trim();
 
-        // Input validation
         if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(SignupActivity.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
             return;
@@ -85,7 +84,7 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        // 1. Register user with Firebase Authentication
+        //Firebase Authentication
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -96,7 +95,6 @@ public class SignupActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             if (user != null) {
-                                // Optional: Update Firebase user's display name (visible in Firebase console)
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(username)
                                         .build();
@@ -112,29 +110,24 @@ public class SignupActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                // 2. Save user data to local SQLite database using the TOP-LEVEL dbHelper
                                 long result = dbHelper.addUserProfile(user.getUid(), username, user.getEmail());
 
                                 if (result != -1) {
                                     Toast.makeText(SignupActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
                                     Log.d(TAG, "User profile saved to local SQLite for UID: " + user.getUid());
 
-                                    // Redirect to LoginActivity after successful registration and local save
                                     startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-                                    finish(); // Close SignupActivity
+                                    finish();
                                 } else {
-                                    // SQLite insertion failed. This is a critical issue.
                                     Toast.makeText(SignupActivity.this, "Registration successful but failed to save local profile. Please contact support.", Toast.LENGTH_LONG).show();
                                     Log.e(TAG, "Failed to add user profile to SQLite for UID: " + user.getUid());
-                                    // Optional: Consider deleting the Firebase user if local save fails, or retry.
-                                    // user.delete(); // Uncomment with caution and proper error handling
+
                                 }
                             } else {
                                 Log.e(TAG, "Firebase user object is null after successful registration. Unexpected error.");
                                 Toast.makeText(SignupActivity.this, "Registration failed: User data not found.", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            // Firebase registration failed
                             Log.w(TAG, "Firebase createUserWithEmail:failure", task.getException());
                             String errorMessage = "Registration failed.";
                             if (task.getException() != null && task.getException().getMessage() != null) {

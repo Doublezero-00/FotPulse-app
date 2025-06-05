@@ -13,17 +13,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment; // Import for Fragment management
-import androidx.fragment.app.FragmentManager; // Import for Fragment management
-import androidx.fragment.app.FragmentTransaction; // Import for Fragment management
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fotpulse.fragments.NewsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView; // Import for BottomNavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// Import your new fragment classes
+
 import com.example.fotpulse.fragments.AcademicFragment;
 import com.example.fotpulse.fragments.EventsFragment;
 
@@ -45,7 +45,7 @@ public class NewsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // If user is not logged in, redirect to LoginActivity
+
         if (currentUser == null) {
             startActivity(new Intent(NewsActivity.this, LoginActivity.class));
             finish();
@@ -54,13 +54,13 @@ public class NewsActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
-        bottomNavigationView = findViewById(R.id.bottom_navigation); // Initialize BottomNavigationView
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         navigationView = findViewById(R.id.navigation_view);
 
-        // --- Setup Toolbar and Navigation Drawer ---
+
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("FotNow"); // Set your title here
+            getSupportActionBar().setTitle("FotNow");
         }
 
         // Set the black navigation icon
@@ -74,10 +74,8 @@ public class NewsActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // --- Setup Navigation View Listener ---
         setupNavigationView();
 
-        // --- Setup Bottom Navigation View Listener ---
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -86,13 +84,16 @@ public class NewsActivity extends AppCompatActivity {
 
                 if (itemId == R.id.navigation_news) {
                     selectedFragment = new NewsFragment();
-                    toolbar.setTitle("News"); // Update toolbar title
+                    toolbar.setTitle("News");
+
                 } else if (itemId == R.id.navigation_academic) {
                     selectedFragment = new AcademicFragment();
-                    toolbar.setTitle("Academic"); // Update toolbar title
+                    toolbar.setTitle("Academic"); //
+
                 } else if (itemId == R.id.navigation_events) {
                     selectedFragment = new EventsFragment();
-                    toolbar.setTitle("Events"); // Update toolbar title
+                    toolbar.setTitle("Events"); //
+
                 }
 
                 if (selectedFragment != null) {
@@ -103,9 +104,8 @@ public class NewsActivity extends AppCompatActivity {
             }
         });
 
-        // Load the default fragment (NewsFragment) when the activity starts
         if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.navigation_news); // This will trigger the listener
+            bottomNavigationView.setSelectedItemId(R.id.navigation_news);
         }
     }
 
@@ -147,7 +147,6 @@ public class NewsActivity extends AppCompatActivity {
         });
     }
 
-    // Method to load fragments into the FrameLayout
     private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -19,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Profile Image -->
         <ImageView
             android:id="@+id/profileImage"
             android:layout_width="120dp"
@@ -29,7 +28,6 @@
             android:background="@drawable/circle_bg"
             android:contentDescription="Profile picture" />
 
-        <!-- Name -->
         <TextView
             android:text="Name"
             android:layout_marginTop="16dp"
@@ -43,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Student No -->
         <TextView
             android:text="Student no"
             android:layout_marginTop="12dp"
@@ -57,7 +54,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Personal Statement -->
         <TextView
             android:text="Personal statement"
             android:layout_marginTop="12dp"
@@ -71,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Version -->
         <TextView
             android:text="Release version"
             android:layout_marginTop="12dp"
@@ -85,7 +80,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Exit Button -->
         <Button
             android:id="@+id/btnExit"
             android:text="Exit"

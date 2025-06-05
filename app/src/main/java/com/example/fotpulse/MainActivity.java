@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "User already logged in. Redirecting to NewsActivity.");
                     mainIntent = new Intent(MainActivity.this, NewsActivity.class);
                 } else {
-                    // No user logged in, go to LoginActivity
+
                     Log.d(TAG, "No user logged in. Redirecting to LoginActivity.");
                     mainIntent = new Intent(MainActivity.this, LoginActivity.class);
                 }

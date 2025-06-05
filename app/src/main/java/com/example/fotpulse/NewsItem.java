@@ -5,7 +5,7 @@ public class NewsItem {
     private String category;
     private String title;
     private String content;
-    private String imageUrl; // Optional, if your news has images
+    private String imageUrl;
 
     public NewsItem(int id, String category, String title, String content, String imageUrl) {
         this.id = id;
@@ -15,12 +15,10 @@ public class NewsItem {
         this.imageUrl = imageUrl;
     }
 
-    // Add getters for all fields
     public int getId() { return id; }
     public String getCategory() { return category; }
     public String getTitle() { return title; }
     public String getContent() { return content; }
     public String getImageUrl() { return imageUrl; }
 
-    // You can also add setters if needed, but often not for immutable data from DB
 }

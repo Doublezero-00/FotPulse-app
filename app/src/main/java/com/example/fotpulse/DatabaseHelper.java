@@ -13,23 +13,17 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "FotPulse.db";
-    // IMPORTANT: Increment this version if you've changed the table schema
-    // (e.g., added 'uid' column, removed 'password' column, or added/changed news columns)
-    // and run the app before.
-    // For example, if your previous version was 5, change it to 6.
-    public static final int DATABASE_VERSION = 10; // <--- CHECK AND INCREMENT THIS IF YOU'VE CHANGED NEWS TABLE SCHEMA!
+    public static final int DATABASE_VERSION = 18;
 
-    // Constants for the News Table
     public static final String TABLE_NEWS = "news";
-    public static final String COLUMN_NEWS_ID = "_id"; // Changed to _id for common Android convention
+    public static final String COLUMN_NEWS_ID = "_id";
     public static final String COLUMN_NEWS_TITLE = "title";
     public static final String COLUMN_NEWS_CONTENT = "content";
     public static final String COLUMN_NEWS_CATEGORY = "category";
-    public static final String COLUMN_NEWS_MEDIA_URL = "media_url"; // Optional: for image URLs
+    public static final String COLUMN_NEWS_MEDIA_URL = "media_url";
 
-    // Constants for the Users Table
     public static final String TABLE_USERS = "users";
-    public static final String COLUMN_USERS_UID = "uid"; // Firebase User ID
+    public static final String COLUMN_USERS_UID = "uid";
     public static final String COLUMN_USERS_USERNAME = "username";
     public static final String COLUMN_USERS_EMAIL = "email";
 
@@ -51,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_NEWS_TABLE);
         Log.d("DatabaseHelper", "News table created.");
 
-        // Create the Users table
+
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + " (" +
                 COLUMN_USERS_UID + " TEXT PRIMARY KEY, " +
                 COLUMN_USERS_USERNAME + " TEXT," +
@@ -59,7 +53,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USERS_TABLE);
         Log.d("DatabaseHelper", "Users table created.");
 
-        // Optional: Populate with some initial news data for testing
         insertSampleNewsData(db);
     }
 
@@ -73,7 +66,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("DatabaseHelper", "Tables dropped and recreated.");
     }
 
-    // --- User Profile Operations (Existing) ---
 
     public long addUserProfile(String uid, String username, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -107,13 +99,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected;
     }
 
-    // --- News Operations (NEW) ---
-
-    /**
-     * Adds a new news item to the database.
-     * @param newsItem The NewsItem object to add.
-     * @return The row ID of the newly inserted row, or -1 if an error occurred.
-     */
     public long addNews(NewsItem newsItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -127,11 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /**
-     * Retrieves all news items for a specific category.
-     * @param category The category of news to retrieve (e.g., "Sports", "Academic", "Events").
-     * @return A list of NewsItem objects.
-     */
+
     public List<NewsItem> getAllNewsByCategory(String category) {
         List<NewsItem> newsList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -170,72 +151,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return newsList;
     }
 
-    /**
-     * Inserts sample news data into the database for testing purposes.
-     * This method is called in onCreate().
-     */
     private void insertSampleNewsData(SQLiteDatabase db) {
         // Clear existing news data to avoid duplicates on upgrade/recreate
         db.execSQL("DELETE FROM " + TABLE_NEWS);
 
-        // --- SPORTS CATEGORY ---
+
         ContentValues sports1 = new ContentValues();
         sports1.put(COLUMN_NEWS_CATEGORY, "Sports");
         sports1.put(COLUMN_NEWS_TITLE, "Champions League Final: Unforgettable Night!");
         sports1.put(COLUMN_NEWS_CONTENT, "Real Madrid clinched their 15th Champions League title in a thrilling final against Dortmund, with Vinicius Jr. and Carvajal finding the net.");
-        sports1.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1549476462-970559e373c7?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Football match
+        sports1.put(COLUMN_NEWS_MEDIA_URL, "https://fastly.picsum.photos/id/841/200/300.jpg?hmac=G9hBg_h2jvXDwBgnqCm8LO9PXRrPRWbz1xgdUrMf1Y8");
+
+
         db.insert(TABLE_NEWS, null, sports1);
 
+        //Sports
         ContentValues sports2 = new ContentValues();
         sports2.put(COLUMN_NEWS_CATEGORY, "Sports");
         sports2.put(COLUMN_NEWS_TITLE, "Olympics Preparations Intensify Across Cities");
         sports2.put(COLUMN_NEWS_CONTENT, "With just months to go, host cities are buzzing with activity as athletes prepare for the greatest sporting spectacle on Earth. New venues are nearing completion.");
-        sports2.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1579737525287-e25f82c42c94?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Olympic rings / stadium
+        sports2.put(COLUMN_NEWS_MEDIA_URL, "https://fastly.picsum.photos/id/238/800/600.jpg?hmac=x11Kjfo7lchZw_mrIGtTlwi_ncxdy1RXEYCkgGGaXcA");
+
         db.insert(TABLE_NEWS, null, sports2);
 
-        ContentValues sports3 = new ContentValues();
-        sports3.put(COLUMN_NEWS_CATEGORY, "Sports");
-        sports3.put(COLUMN_NEWS_TITLE, "Rising Star Breaks Track Record");
-        sports3.put(COLUMN_NEWS_CONTENT, "Local athlete Sarah Chen shattered the 100-meter sprint record at the regional championships, cementing her place as a formidable talent.");
-        sports3.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1579294244583-04e38e1b2f0a?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Sprinter on track
-        db.insert(TABLE_NEWS, null, sports3);
 
-        // --- ACADEMIC CATEGORY ---
+        //Academic
         ContentValues academic1 = new ContentValues();
         academic1.put(COLUMN_NEWS_CATEGORY, "Academic");
         academic1.put(COLUMN_NEWS_TITLE, "University Launches Innovative AI Research Hub");
         academic1.put(COLUMN_NEWS_CONTENT, "FotPulse University proudly announces the opening of its state-of-the-art Artificial Intelligence Research Hub, fostering collaborative breakthroughs.");
-        academic1.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1517430816045-df43b7430d21?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // People working on computers/AI
+        academic1.put(COLUMN_NEWS_MEDIA_URL, "https://fastly.picsum.photos/id/65/200/300.jpg?hmac=o9HaDBPcrCPi8zfB6MoTe6MNNVPsEN4orpzsHhCPlbU");
         db.insert(TABLE_NEWS, null, academic1);
 
-        ContentValues academic2 = new ContentValues();
-        academic2.put(COLUMN_NEWS_CATEGORY, "Academic");
-        academic2.put(COLUMN_NEWS_TITLE, "New Scholarship Fund Benefits STEM Students");
-        academic2.put(COLUMN_NEWS_CONTENT, "A generous new scholarship fund has been established to support students pursuing degrees in Science, Technology, Engineering, and Mathematics fields.");
-        academic2.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1526374965328-b32c69990567?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Books/library, focus on learning
-        db.insert(TABLE_NEWS, null, academic2);
 
-        ContentValues academic3 = new ContentValues();
-        academic3.put(COLUMN_NEWS_CATEGORY, "Academic");
-        academic3.put(COLUMN_NEWS_TITLE, "Student-Led Startup Wins National Innovation Award");
-        academic3.put(COLUMN_NEWS_CONTENT, "A groundbreaking startup founded by FotPulse students has secured a prestigious national award for its innovative solution to urban sustainability.");
-        academic3.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1629904853716-f0bc5963f4b4?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Students working collaboratively/discussion
-        db.insert(TABLE_NEWS, null, academic3);
 
-        // --- EVENTS CATEGORY ---
+        //Events
         ContentValues events1 = new ContentValues();
         events1.put(COLUMN_NEWS_CATEGORY, "Events");
         events1.put(COLUMN_NEWS_TITLE, "Annual Cultural Festival Returns with New Acts");
         events1.put(COLUMN_NEWS_CONTENT, "The much-loved annual cultural festival is back with an exciting lineup of performances, food stalls, and artisan crafts for all ages.");
-        events1.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1530177728775-f2d4f2b96317?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Crowd at a festival/concert
+        events1.put(COLUMN_NEWS_MEDIA_URL, "https://fastly.picsum.photos/id/281/200/300.jpg?hmac=KCN8F5QTgxHdeQxLpZ5BOuUEVQEp8jAedlLSRERW7CY");
         db.insert(TABLE_NEWS, null, events1);
 
-        ContentValues events2 = new ContentValues();
-        events2.put(COLUMN_NEWS_CATEGORY, "Events");
-        events2.put(COLUMN_NEWS_TITLE, "Tech Summit 2025: Innovation on Display");
-        events2.put(COLUMN_NEWS_CONTENT, "The city's biggest tech summit is set to bring together industry leaders, startups, and enthusiasts to explore the future of technology.");
-        events2.put(COLUMN_NEWS_MEDIA_URL, "https://images.unsplash.com/photo-1555546556-9b575a226b52?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); // Tech conference/expo
-        db.insert(TABLE_NEWS, null, events2);
 
         Log.d("DatabaseHelper", "Sample news data inserted.");
     }
