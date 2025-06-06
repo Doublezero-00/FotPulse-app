@@ -4,7 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/backgroundColor"> <ImageView
-    android:id="@+id/appLogo" android:layout_width="200dp" android:layout_height="200dp" android:src="@drawable/logo" android:contentDescription="App Logo" />
+    android:background="@color/backgroundColor">
 
+    <TextView
+        android:id="@+id/fragment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="#000000" />
 </LinearLayout>
